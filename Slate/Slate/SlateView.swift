@@ -20,12 +20,13 @@ struct SlateView: View {
     return dateFormatter
   }()
   @State private var backgorundColor = Color.white
+  @State private var player: AVAudioPlayer?
   
   var body: some View {
     ScrollView {
       VStack(alignment: .center, spacing: .zero) {
         Button("Action!") {
-          AudioServicesPlaySystemSound(1054)
+          playSlateSound()
           Task {
             await flashBackground()
           }
@@ -56,6 +57,17 @@ extension SlateView {
     backgorundColor = Color.red
     try? await Task.sleep(for: .seconds(0.2))
     backgorundColor = Color.white
+  }
+  
+  func playSlateSound() {
+    guard let asset = NSDataAsset(name: "slate_sound") else { return }
+    do {
+      player = try AVAudioPlayer(data: asset.data)
+      player?.prepareToPlay()
+      player?.play()
+    } catch let error {
+      print(error.localizedDescription)
+    }
   }
 }
 
