@@ -42,6 +42,7 @@ struct SlateView: View {
           .multilineTextAlignment(.center)
         Text(date)
           .font(.system(size: 60, weight: .bold))
+          .monospaced()
           .onReceive(timer, perform: { _ in
             date = dateFomatter.string(from: Date())
           })
